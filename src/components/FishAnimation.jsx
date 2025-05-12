@@ -46,6 +46,21 @@ class LightWisp {
   }
   draw(ctx, isAnimatingRef) {
     if (!isAnimatingRef.current) return;
+    // Prevent wisps from drawing in the systems and pricing sections
+    const systemsSection = document.getElementById('systems');
+    const pricingSection = document.getElementById('pricing');
+    if (systemsSection && pricingSection) {
+      const systemsRect = systemsSection.getBoundingClientRect();
+      const pricingRect = pricingSection.getBoundingClientRect();
+      // Convert canvas Y to viewport Y
+      const yInViewport = this.y;
+      if (
+        (yInViewport > systemsRect.top && yInViewport < systemsRect.bottom) ||
+        (yInViewport > pricingRect.top && yInViewport < pricingRect.bottom)
+      ) {
+        return;
+      }
+    }
     ctx.save();
     const gradient = ctx.createRadialGradient(
       this.x, this.y, 0,
