@@ -18,6 +18,7 @@ export default function LightWisps() {
 
     let animationFrameId;
     let scrollY = window.scrollY;
+    let isAnimating = true;
 
     // Light wisp class
     class LightWisp {
@@ -41,6 +42,8 @@ export default function LightWisps() {
       }
 
       update() {
+        if (!isAnimating) return;
+        
         // Fade in
         if (this.opacity < this.targetOpacity) {
           this.opacity += this.fadeInSpeed;
@@ -76,6 +79,8 @@ export default function LightWisps() {
       }
 
       draw() {
+        if (!isAnimating) return;
+        
         // Check if wisp is behind content sections
         const systemsSection = document.getElementById('systems');
         const pricingSection = document.getElementById('pricing');
@@ -128,6 +133,7 @@ export default function LightWisps() {
     }
 
     const resizeCanvas = () => {
+      if (!canvas || !ctx) return;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       console.log('Canvas resized:', canvas.width, canvas.height);
@@ -138,6 +144,8 @@ export default function LightWisps() {
     console.log('Created wisps:', wisps.length);
 
     const animate = () => {
+      if (!isAnimating || !canvas || !ctx) return;
+      
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       wisps.forEach(wisp => {
@@ -152,14 +160,24 @@ export default function LightWisps() {
       scrollY = window.scrollY;
     };
 
+    const handleVisibilityChange = () => {
+      isAnimating = !document.hidden;
+      if (isAnimating) {
+        animate();
+      }
+    };
+
     window.addEventListener('resize', resizeCanvas);
     window.addEventListener('scroll', handleScroll);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     resizeCanvas();
     animate();
 
     return () => {
+      isAnimating = false;
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
