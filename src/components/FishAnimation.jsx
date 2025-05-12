@@ -5,7 +5,17 @@ export default function LightWisps() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) {
+      console.error('Canvas not found');
+      return;
+    }
+    
     const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      console.error('Could not get canvas context');
+      return;
+    }
+
     let animationFrameId;
     let scrollY = window.scrollY;
 
@@ -120,10 +130,12 @@ export default function LightWisps() {
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      console.log('Canvas resized:', canvas.width, canvas.height);
     };
 
     // Create wisps
     const wisps = Array.from({ length: 20 }, () => new LightWisp());
+    console.log('Created wisps:', wisps.length);
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -155,7 +167,17 @@ export default function LightWisps() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full pointer-events-none z-[1]"
+      className="fixed top-0 left-0 w-full h-full pointer-events-none z-0"
+      style={{ 
+        position: 'fixed', 
+        top: 0, 
+        left: 0, 
+        width: '100%', 
+        height: '100%',
+        pointerEvents: 'none',
+        zIndex: 0,
+        backgroundColor: 'transparent'
+      }}
     />
   );
 } 

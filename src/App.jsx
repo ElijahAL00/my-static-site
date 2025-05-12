@@ -23,7 +23,6 @@ export default function App() {
     <ErrorBoundary>
       <div className="min-h-screen bg-black text-white">
         <CursorEffect />
-        <LightWisps />
         <Navbar />
         <Suspense fallback={<LoadingFallback />}>
           <main>
@@ -32,6 +31,7 @@ export default function App() {
             <Pricing />
           </main>
         </Suspense>
+        <LightWisps />
       </div>
     </ErrorBoundary>
   );
