@@ -59,7 +59,7 @@ export default function Features() {
           <div 
             key={i}
             onClick={scrollToPricing}
-            className="bg-pink-500/10 backdrop-blur-sm rounded-xl p-8 shadow-lg grid grid-cols-4 gap-8
+            className="bg-pink-500/10 backdrop-blur-sm rounded-xl p-8 shadow-lg grid grid-cols-1 md:grid-cols-4 gap-8
                       border border-pink-500/20 transition-all duration-300 hover:scale-105 
                       hover:bg-pink-500/20 hover:shadow-pink-500/20 group cursor-pointer"
           >
